@@ -29,6 +29,3 @@ Expenza is a modern, user-friendly expense tracker web application built with Dj
 - `templates/` – HTML templates
 - `static/` – Static files (CSS, JS)
 - `media/` – Uploaded receipts
-
-## License
-This project is for educational purposes.
