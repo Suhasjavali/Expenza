@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Budgets - Expenza{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Budgets</h1>
+    <a href="{% url 'budget_create' %}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Add Budget
+    </a>
+</div>
+
+<div class="row">
+    {% for budget in budgets %}
+    <div class="col-md-6 mb-4">
+        <div class="card shadow h-100">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <span class="badge bg-primary me-2">{{ budget.category.name }}</span>
+                    <small class="text-muted">Period: {{ budget.start_date|date:"d M Y" }} - {{ budget.end_date|date:"d M Y" }}</small>
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="mb-2">
+                            <strong>Budget Amount:</strong>
+                            <span class="currency-symbol">₹</span>{{ budget.amount }}
+                        </p>
+                        <p class="mb-2">
+                            <strong>Spent Amount:</strong>
+                            <span class="currency-symbol">₹</span>{{ budget.spent_amount }}
+                        </p>
+                        <p class="mb-0">
+                            <strong>Remaining Amount:</strong>
+                            <span class="currency-symbol">₹</span>{{ budget.remaining_amount }}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="progress mb-3" style="height: 25px;">
+                            <div class="progress-bar bg-{% if budget.progress_percentage > 80 %}danger{% elif budget.progress_percentage > 50 %}warning{% else %}success{% endif %}" 
+                                 role="progressbar" 
+                                 style="width: {{ budget.progress_percentage }}%">
+                                {{ budget.progress_percentage }}%
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">0%</small>
+                            <small class="text-muted">100%</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                        Created: {{ budget.created_at|date:"d M Y" }}
+                    </small>
+                    <div class="btn-group">
+                        <a href="{% url 'budget_update' budget.pk %}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{% url 'budget_delete' budget.pk %}" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>No budgets found. Create your first budget to start tracking your spending!
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
